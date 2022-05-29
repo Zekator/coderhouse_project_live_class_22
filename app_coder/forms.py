@@ -2,7 +2,7 @@ import datetime
 from django import forms
 from django.forms import ModelForm
 from app_coder.models import Profesor
-
+from app_coder.models import Student
 
 class CourseForm(forms.Form):
     name = forms.CharField(max_length=40, min_length=3, label='Nombre')
@@ -28,3 +28,8 @@ class HomeworkForm(forms.Form):
         widget=forms.TextInput(attrs={'placeholder': 'yyyy-mm-dd'})
     )
     is_delivered = forms.BooleanField(label='Entregado', required=False)
+
+
+class StudentForm(forms.Form):
+    name = forms.CharField(max_length=40, min_length=3, label='Nombre')
+    code = forms.IntegerField(label='Camada')

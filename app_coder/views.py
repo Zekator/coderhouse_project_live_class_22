@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.forms.models import model_to_dict
 
 from app_coder.models import Course, Student, Profesor, Homework
-from app_coder.forms import CourseForm, ProfesorForm, HomeworkForm
+from app_coder.forms import CourseForm, ProfesorForm, HomeworkForm,StudentForm
 
 
 def index(request):
@@ -51,6 +51,37 @@ def students(request):
         template_name="app_coder/students.html"
     )
 
+def student_forms_django(request):
+    if request.method == 'POST':
+        student_form = StudentForm(request.POST)
+        if student_form.is_valid():
+            data = student_form.cleaned_data
+            student = Student(
+                name=data['name'],
+                due_date=data['due_date'],
+                is_delivered=data['is_delivered'],
+            )
+            student.save()
+
+            student = Student.objects.all()
+            context_dict = {
+                'students': students
+            }
+            return render(
+                request=request,
+                context=context_dict,
+                template_name="app_coder/students.html"
+            )
+
+    student_form = StudentForm(request.POST)
+    context_dict = {
+        'student_form': student_form
+    }
+    return render(
+        request=request,
+        context=context_dict,
+        template_name='app_coder/student_django_forms.html'
+    )
 
 def homeworks(request):
     homeworks = Homework.objects.all()
@@ -309,3 +340,35 @@ class CourseDeleteView(DeleteView):
     model = Course
     # success_url = "/app_coder/courses"
     success_url = reverse_lazy('app_coder:course-list')
+
+#views de STUDENTS
+class StudentListView(ListView):
+    model = Student
+    template_name = "app_coder/student_list.html"
+
+
+class StudentDetailView(DetailView):
+    model = Student
+    template_name = "app_coder/student_detail.html"
+
+
+class StudentCreateView(CreateView):
+    model = Student
+    # template_name = "app_coder/course_form.html"
+    # success_url = "/app_coder/courses"
+    success_url = reverse_lazy('app_coder:student-list')
+    fields = ['name', 'code']
+
+
+class StudentUpdateView(UpdateView):
+    model = Student
+    # template_name = "app_coder/course_form.html"
+    # success_url = "/app_coder/courses"
+    success_url = reverse_lazy('app_coder:student-list')
+    fields = ['name', 'code']
+
+
+class StudentDeleteView(DeleteView):
+    model = Student
+    # success_url = "/app_coder/courses"
+    success_url = reverse_lazy('app_coder:student-list')

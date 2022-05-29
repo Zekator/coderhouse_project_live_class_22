@@ -15,6 +15,7 @@ urlpatterns = [
     path('profesor/<int:pk>/update', views.update_profesor, name='UpdateProfesor'),
     path('profesor/<int:pk>/delete', views.delete_profesor, name='DeleteProfesor'),
     path('homework-django-forms', views.homework_forms_django, name='HomeworkDjangoForms'),
+    path('student-django-forms', views.student_forms_django, name='StudentDjangoForms'),
     path('search', views.search, name='Search'),
 
 
@@ -24,4 +25,13 @@ urlpatterns = [
     path('course/<int:pk>/detail', views.CourseDetailView.as_view(), name='course-detail'),
     path('course/<int:pk>/update', views.CourseUpdateView.as_view(), name='course-update'),
     path('course/<int:pk>/delete', views.CourseDeleteView.as_view(), name='course-delete'),
-]
+
+
+    path('students', views.StudentListView.as_view(), name='student-list'),
+    path('student/add/', views.StudentCreateView.as_view(), name='student-add'),
+    path('student/<int:pk>/detail', views.StudentDetailView.as_view(), name='student-detail'),
+    path('student/<int:pk>/update', views.StudentUpdateView.as_view(), name='student-update'),
+    path('student/<int:pk>/delete', views.StudentDeleteView.as_view(), name='student-delete'),
+    
+    
+    ]
